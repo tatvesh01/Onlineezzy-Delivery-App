@@ -1,16 +1,8 @@
-# onlineezzy
+# Onlineezzy Courier Delivery App
+# Language : Arabic and English
+# Flutter using GetX
 
-A new Flutter project.
+This application is developed for delivery business, user can check courier delivery status with real time location updates about them.
+This app have two login role first is for User and second is for Delivery boy.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Example Image](ScreenShots/1.png)
