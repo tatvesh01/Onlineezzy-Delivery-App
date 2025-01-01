@@ -6,5 +6,10 @@ This application is developed for delivery business, user can check courier deli
 This app have two login role first is for User and second is for Delivery boy.
 
 
-<img src="ScreenShots/1.jpg" alt="Alt text" width="200" height="500">
-<img src="ScreenShots/2.jpg" alt="Alt text" width="200" height="500">
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img src="ScreenShots/1.jpg" alt="Alt text" width="200" height="500">
+  <img src="ScreenShots/2.jpg" alt="Alt text" width="200" height="500">
+  <img src="ScreenShots/1.jpg" alt="Alt text" width="200" height="500">
+  <img src="ScreenShots/2.jpg" alt="Alt text" width="200" height="500">
+</div>
+
