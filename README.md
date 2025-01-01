@@ -1,9 +1,9 @@
-# Onlineezzy Courier Delivery App
-
-Platform : Flutter
-State Management : GetX
-In App Language Support : Arabic and English
-Map Library : google_maps_flutter
+# Onlineezzy: Courier Delivery App
+<BR><BR><BR>
+Platform : Flutter<BR>
+State Management : GetX<BR>
+In App Language Support : Arabic and English<BR>
+Map Library : google_maps_flutter<BR><BR><BR>
 
 
 This application is developed for delivery business, user can check courier delivery status with real time location updates about them.<BR>
