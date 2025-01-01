@@ -94,52 +94,7 @@ class CustomerMapScreenController extends GetxController{
         Global.showToast("Delivery not On the way, check in Database");
       }
     });
-  }
-
-  void setUpMapData() async {
-    carBitMap = BitmapDescriptor.fromBytes(await Global.getBytesFromAsset(Helper.carImg, 100));
-    mapDataForNavigation = Get.arguments[0];
-    LatLng loopingLatLong = LatLng(double.parse(mapDataForNavigation.wayPointsForSaveData[0][0]), double.parse(mapDataForNavigation.wayPointsForSaveData[0][1]));
-
-    originLocationReached(true);
-    refreshBottomSheet(true);
-    refreshBottomSheet(false);
-
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection(Helper.deliveryBoyForFB)
-        .doc(myUserId.toString())
-        .get();
-
-    if (snapshot.exists) {
-      var data = snapshot.data() as Map<String, dynamic>;
-      DBPosition = LatLng(data['lat'], data['long']);
-      debugPrint("DBPosition ==> ${DBPosition}");
-    }else{
-      Global.showToast("Delivery not On the way, check in Database");
-    }
-
-    LatLng loopingLatLong1 = DBPosition;
-    originLatLong = PointLatLng(loopingLatLong.latitude,loopingLatLong.longitude);
-    destinationLatLong = PointLatLng(loopingLatLong1.latitude,loopingLatLong1.longitude);
-    routesList.addData(PolylineWayPoint(location: "${loopingLatLong.latitude},${loopingLatLong.longitude}"), loopingLatLong, mapDataForNavigation.allAddress[0]);
-    routesList.addData(PolylineWayPoint(location: "${loopingLatLong1.latitude},${loopingLatLong1.longitude}"), loopingLatLong1, mapDataForNavigation.allAddress[0]);
-    showCustomerPin();
-
-    manageWayPointsAndDrawRoutes(routesList.wayPointsPoly).then((value) {
-      Set<Polyline> tempPolyLine = {};
-      polylines.forEach((key, value) {
-        tempPolyLine.add(value);
-      });
-      Global.setAllMarkerCenterInMap(tempPolyLine,mapController);
-    });
-  }
-
-  googleMapCreated(GoogleMapController controller){
-    if(!mapController.isCompleted){
-      mapController.complete(controller);
-      _mapController = controller;
-    }
-  }
+  } 
 
   void updateLatLongOnMap(LatLng dbPosition){
     DateTime currentTime = DateTime.now();
@@ -163,71 +118,7 @@ class CustomerMapScreenController extends GetxController{
     markers[markerId] = Marker(markerId: markerId, icon: customerPin, position: LatLng(originLatLong.latitude, originLatLong.longitude),anchor: middleOfCarImg);
     updateMap();
   }
-
-  void reDrawPoliLineOnMap()async {
-    PointLatLng originTemp = PointLatLng(DBPosition.latitude, DBPosition.longitude);
-
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleApiKey: Global.mapApiKey,
-      request: PolylineRequest(
-        //origin: originLatLong,
-          origin: originTemp,
-          destination: originLatLong,
-          mode: TravelMode.driving,
-          wayPoints: []
-      ),
-    );
-
-    calculateDistance();
-    removeAllPolyLine();
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      Global.showToast("Error From Google Api : ${result.errorMessage}");
-    }
-
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-      polylineId: id,
-      points: polylineCoordinates,
-      color: Helper.redColor,
-      width: 7,
-    );
-    polylines[id] = polyline;
-    updateMap();
-  }
-
-  updateLocationAndUi(LatLng newLocationData) async {
-    debugPrint("location update ==> onLocationChanged");
-
-      myLatLong = LatLng(newLocationData.latitude ?? 0.0, newLocationData.longitude ?? 0.0);
-      animateCar(myLatLong);
-
-      double calcDestinationInMtr = Global.calculateDistanceInMeter(originLatLong.latitude, originLatLong.longitude,DBPosition.latitude,DBPosition.longitude);
-      if(calcDestinationInMtr <= 50){
-        Global.showToast("Your Final Destination Reached");
-        navigationStarted(false);
-        locationReachedCounter = 0;
-        await Future.delayed(const Duration(seconds: 1));
-        removeAllPolyLine();
-      }
-
-      if(navigationStarted.value){
-        if(latLongForDistCalcWhileDriving != null){
-          double distanceInMeter = Global.calculateDistanceInMeter(myLatLong.latitude, myLatLong.longitude, latLongForDistCalcWhileDriving!.latitude, latLongForDistCalcWhileDriving!.longitude);
-          if(distanceInMeter >= Helper.drawReRouteTimeMinMtr){
-            originLatLong = PointLatLng(myLatLong.latitude,myLatLong.longitude);
-            //drawRouteOnMap(wayPointsPolyWhileDriving);
-            manageWayPointsAndDrawRoutes(wayPointsPolyWhileDriving);
-            latLongForDistCalcWhileDriving = myLatLong;
-          }
-        }else{
-          latLongForDistCalcWhileDriving = myLatLong;
-        }
-      }
-  }
+  
 
   moveCameraOnMyLocation(LatLng myLatLong, double mainBearings) async {
     final c = await mapController.future;
